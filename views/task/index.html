@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css"/>
+
+    <title>Go CRUD MODAL</title>
+  </head>
+  <body>
+   <!-- NAV BAR-->
+   <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+    <a class="navbar-brand" href="#">Go-Task</a>
+    
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Data</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Contact</a>
+      </li>
+    </ul>
+  </nav>
+  
+<!--Jumbo Tron-->
+<div class="row">
+    <div class="col-md-12">
+    <div class="jumbotron bg-cover text-white" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.6) 100%), url(https://placeimg.com/1000/480/tech)">
+      <div class="container">
+        <br>
+      <h1 class="display-4">Selamat Datang Di Go Task</h1>
+      <p class="lead">Go Task memberikan kemudahan dalam mengola tugas anda.</p>
+      <a class="btn btn-primary btn-lg" href="#" role="button"><i class="fa-solid fa-angles-left"></i> Kembali ke Home</a>
+        </div>
+    <!-- /.container   -->
+    </div>
+    </div>
+    </div>
+
+    <div class="modal fade" id="modalTask" tabindex="-1" role="dialog" aria-labelledby="modalTaskLabel" aria-hidden="true">  
+    </div>
+    <div class="container mt-1">
+    <!--SIDE BARRR-->
+    
+    <!-- BREADCRUMB-->
+    <h2>DATA TASK</h2>
+    <nav aria-label="breadcrumb">
+	    <ol class="breadcrumb">
+		    <li class="breadcrumb-item"><a href="#"><i class="fa-solid fa-house-chimney-user"></i> Home</a></li>
+		    <li class="breadcrumb-item"><a href="#">Task</a></li>
+		    <li class="breadcrumb-item active" aria-current="page">View Task</li>
+	    </ol>
+    </nav>
+    <div class="spinner-border text-muted"></div>
+    <!--End of Breadcumb-->
+        <button type="button" class="btn btn-primary add-task"><i class="fa-solid fa-circle-plus"></i> Add Data</button>
+
+        <table class="table mt-3">
+            <thead class="thead-dark">
+                <th>No</th>
+                <th>Isi Task</th>
+                <th>Pegawai</th>
+                <th>Deadline</th>
+                <th>Status</th>
+                <th style="width: 20%;">Utility</th>
+            </thead>
+            <tbody>
+                {{ .data }}
+            </tbody>
+        </table>
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item active"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+        <div class="container">
+
+            <p style="color: #fff;">
+          &#169; Copyright, Adhitya Pratama 2022 - Go-Task V 1.0.0
+        </div>
+      </nav>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  
+    <script>
+
+        var site_url = "http://localhost:8000/";
+
+        $(document).ready(function(){
+            $('.add-task').click(function(){
+                $.get(site_url + "task/get_form", function(html){
+                    $('#modalTask').html(html).modal('show')
+                });     
+            });
+
+            $(document).on('click', '.edit-task', function(){
+                var id = $(this).attr('data-id');
+                $.get(site_url + "task/get_form?id=" + id, function(html){
+                    $('#modalTask').html(html).modal('show')
+                });     
+            });
+
+            $(document).on('click', '.delete-task', function(){
+                var id = $(this).attr('data-id');
+                var confirmDelete = confirm("apakah anda yakin ingin melenyapkan data ini?");
+                if (confirmDelete == true) {
+                    $.post(site_url + "task/delete", {id: id}, function(response){
+                        alert(response.message)
+                        $('tbody').html(response.data);
+                    }, 'JSON');
+                }
+            });
+
+            $(document).on('submit', '#form-task', function(e){
+                e.preventDefault();
+                $.ajax({
+                    type: $(this).attr('method'),
+                    url: $(this).attr('action'),
+                    data: $(this).serialize(),
+                    dataType: "json",
+                    success: function(response){
+                        $('tbody').html(response.data)
+                        alert(response.message)
+                        $('#modalTask').modal('hide')
+                    },
+                    error: function(response){
+                        console.log(response)
+                    }
+                })
+            });
+        });
+    </script>
+</body>
+</html>
