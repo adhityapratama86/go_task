@@ -29,7 +29,7 @@
                     <label for="">Status</label>
                     <select name="status" class="form-control">
                         <option {{ if eq .task.Status `Done` }} selected {{ end }} value="Done">Done</option>
-                        <option {{ if eq .task.Status `Undone` }} selected {{ end }} value="Undone">Undone</option>
+                        <option {{ if eq .task.Status `OnProgress` }} selected {{ end }} value="OnProgress">On Progress</option>
                     </select>
                 </div>
             </div>
