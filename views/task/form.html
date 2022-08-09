@@ -24,9 +24,13 @@
                     <label for="">Deadline</label>
                     <input type="date" name="deadline"  value="{{ .task.Deadline }}" class="form-control">
                 </div>
+                
                 <div class="form-group">
                     <label for="">Status</label>
-                    <input type="text" name="status"  value="{{ .task.Status }}" class="form-control">
+                    <select name="status" class="form-control">
+                        <option {{ if eq .task.Status `Done` }} selected {{ end }} value="Done">Done</option>
+                        <option {{ if eq .task.Status `Undone` }} selected {{ end }} value="Undone">Undone</option>
+                    </select>
                 </div>
             </div>
             <div class="modal-footer">
