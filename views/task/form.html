@@ -24,12 +24,12 @@
                     <label for="">Deadline</label>
                     <input type="date" name="deadline"  value="{{ .task.Deadline }}" class="form-control">
                 </div>
-                
+                <!--input option-->
                 <div class="form-group">
                     <label for="">Status</label>
                     <select name="status" class="form-control">
                         <option {{ if eq .task.Status `Done` }} selected {{ end }} value="Done">Done</option>
-                        <option {{ if eq .task.Status `OnProgress` }} selected {{ end }} value="OnProgress">On Progress</option>
+                        <option {{ if eq .task.Status `OnProgress` }} selected {{ end }} value="On Progress">On Progress</option>
                     </select>
                 </div>
             </div>
